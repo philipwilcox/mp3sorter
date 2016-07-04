@@ -25,7 +25,8 @@ Options:
       println(s"Dry run? ${settings.dryRun}")
       println(s"Target dir: ${settings.targetDirectory.get}")
       // TODO Jul 4, pmw: do something useful with these settings!
-      val fileScanner = new FileScanner(settings.targetDirectory.get)
+      val directoryScanner = new DirectoryScanner(settings.targetDirectory.get)
+      // TODO Jul 4, pmw: how can I make the underlying extraction logic testable?
     }
   }
 
