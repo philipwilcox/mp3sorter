@@ -2,6 +2,8 @@ package com.philipwilcox.mp3sorter
 
 import java.io.File
 
+import org.apache.commons.io.FileUtils
+
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
@@ -23,8 +25,9 @@ class DirectoryScanner(baseDirectoryPath: String) {
   }
 
   private def recursiveListFiles(f: File): Array[File] = {
-    val these = f.listFiles
-    these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
+    val allFilesAndDirs = f.listFiles
+    val filesOnly = allFilesAndDirs.filter(_.isFile)
+    filesOnly ++ allFilesAndDirs.filter(_.isDirectory).flatMap(recursiveListFiles)
   }
 
 
@@ -39,6 +42,17 @@ class DirectoryScanner(baseDirectoryPath: String) {
     stringList.mkString("\n")
   }
 
-  // TODO Jul 4, pmw: this will expose "print move information" as well as "move files" methods that will be
-  // called by caller as appropriate
+  /**
+    * This actually performs the file movement, moving each file from its original path to its destination path.
+    */
+  def moveFiles(): Unit = {
+    for ((oldPath, newPath) <- moveInformationPathMap) {
+      if (!oldPath.equalsIgnoreCase(newPath)) {
+        FileUtils.moveFile(
+          FileUtils.getFile(oldPath),
+          FileUtils.getFile(newPath)
+        )
+      }
+    }
+  }
 }
