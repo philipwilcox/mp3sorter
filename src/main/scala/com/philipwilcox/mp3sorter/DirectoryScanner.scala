@@ -19,8 +19,8 @@ class DirectoryScanner(baseDirectoryPath: String) {
 
   private def analyzeFiles(): Unit = {
     for (f <- fileArray) {
-      val fileData = new FileDataReader(f)
-      println(fileData) // TODO Jul 4, pmw: map to a MusicFile list
+      val musicFile = new MusicFile(f, TagData.readFromFile(f))
+      println(musicFile) // TODO Jul 4, pmw: map to a MusicFile list
     }
   }
 
