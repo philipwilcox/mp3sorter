@@ -11,3 +11,4 @@ folder, so this restores some structure.
 
 Eventual feature wishlist includes optional auto-search with human approval for finding missing album art, if it
 wasn't in the file.
+Or, look at pulling it out of the iTunes library files with something like https://github.com/computersarehard/java-itc so it's more repeatable and not an every-time process.
