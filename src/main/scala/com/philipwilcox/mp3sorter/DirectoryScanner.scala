@@ -19,6 +19,7 @@ class DirectoryScanner(baseDirectoryPath: String) {
 
   private def analyzeFiles(): Unit = {
     for (f <- fileArray) {
+      // TODO Jul 4, pmw: if I want to test at this level, I'll need to inject and mock out TagData object
       val musicFile = new MusicFile(f, TagData.readFromFile(f))
       println(musicFile) // TODO Jul 4, pmw: map to a MusicFile list
     }
