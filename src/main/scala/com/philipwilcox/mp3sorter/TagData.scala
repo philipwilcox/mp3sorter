@@ -38,7 +38,5 @@ class TagData(tag: Tag) {
     tag.getFirst(FieldKey.TITLE)
   }
 
-  override def toString() = {
-    s"TagData(${artist}, ${year}, ${album}, ${track}, ${title})"
-  }
+  override def toString = s"TagData($artist(), $year(), $album(), $track(), $title())"
 }
