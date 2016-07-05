@@ -32,14 +32,18 @@ class DirectoryScanner(baseDirectoryPath: String) {
 
 
   /**
-    * This returns a string containing, one per line, the old absolute path and new absolute path for the file.
+    * This returns a list of strings containing, one per string, the old absolute path and new absolute path for a file.
+    *
+    * Files that will not be moved will be ignored.
     */
-  def moveInformation(): String = {
+  def moveInformation() = {
     val stringList = new ListBuffer[String]()
     for ((oldPath, newPath) <- moveInformationPathMap) {
-      stringList += s"$oldPath -> $newPath"
+      if (!oldPath.equals(newPath)) {
+        stringList += s"$oldPath -> $newPath"
+      }
     }
-    stringList.mkString("\n")
+    stringList
   }
 
   /**
@@ -47,7 +51,7 @@ class DirectoryScanner(baseDirectoryPath: String) {
     */
   def moveFiles(): Unit = {
     for ((oldPath, newPath) <- moveInformationPathMap) {
-      if (!oldPath.equalsIgnoreCase(newPath)) {
+      if (!oldPath.equals(newPath)) {
         FileUtils.moveFile(
           FileUtils.getFile(oldPath),
           FileUtils.getFile(newPath)

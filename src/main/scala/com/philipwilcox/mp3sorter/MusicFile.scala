@@ -14,14 +14,16 @@ class MusicFile(file: File, tagData: TagData) {
   // Note that right now this is a relative path, not an absolute one!
   val relativeOutputPath = {
     val components = Seq(
-      s"${tagData.artist()}/(${tagData.year()}) ${tagData.album()}/",
-      s"${tagData.track()} ${tagData.title()}.${FilenameUtils.getExtension(absolutePath).toLowerCase}"
+      s"${tagData.artist()}",
+      s"(${tagData.year()}) ${tagData.album()}",
+      s"${tagData.track()}. ${tagData.title()}.${FilenameUtils.getExtension(absolutePath).toLowerCase}"
     )
-    // TODO Jul 4, pmw: make settings injectable so we can only show this warning if verbose
-    val relativePath = components.mkString
-    val pathSafeRelativePath = pathSafe(relativePath)
+    // TODO Jul 4, pmw: make settings injectable so we can only show this warning if verbose - actually, just
+    // toggle on verbose log level
+    val relativePath = components.mkString("/")
+    val pathSafeRelativePath = components.map(s => pathSafeComponent(s)).mkString("/")
     if (!relativePath.equalsIgnoreCase(pathSafeRelativePath)) {
-      println(s"  sNOTE: relative path was $relativePath, path safe version differs: $pathSafeRelativePath")
+      println(s"  NOTE: relative path was $relativePath, path safe version differs: $pathSafeRelativePath")
     }
     pathSafeRelativePath
   }
@@ -33,5 +35,13 @@ class MusicFile(file: File, tagData: TagData) {
   /**
     * Escape anything that isn't one of a small list of whitelisted characters with an empty string.
     */
-  private def pathSafe(string: String) = string.replaceAll("[^a-zA-Z0-9()-_ '&,!/]+", "")
+  private def pathSafeComponent(string: String) = {
+    string.replaceAll("\\[", "(")
+      .replaceAll("\\]", ")")
+      .replaceAll(":", " -")
+      .replaceAll("/", "-")
+      .replaceAll(";", ",")
+      .replaceAll("\\.\\Z", "") // can't end a directory component with a dot
+      .replaceAll("[^a-zA-Z0-9()_ '&,!.+\\-]+", "")
+  }
 }

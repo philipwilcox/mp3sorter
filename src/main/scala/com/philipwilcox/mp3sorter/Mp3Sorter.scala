@@ -26,13 +26,19 @@ Options:
       println(s"Target dir: ${settings.targetDirectory.get}")
       val directoryScanner = new DirectoryScanner(settings.targetDirectory.get)
       if (settings.verbose) {
+        val fileMoves = directoryScanner.moveInformation()
         if (settings.dryRun) {
-          println("WOULD MOVE:")
+          println(s"WOULD MOVE ${fileMoves.length} FILES:")
         } else {
-          println("MOVING:")
+          println("MOVING ${fileMoves.length} FILES:")
         }
-        println(directoryScanner.moveInformation())
+        println(fileMoves.mkString("\n"))
       }
+      // Finally, move the files around
+      if (!settings.dryRun) {
+        directoryScanner.moveFiles()
+      }
+      // TODO Jul 4, pmw: add an option at the end to clean up any now-empty dirs
     }
   }
 
