@@ -1,3 +1,5 @@
+package com.philipwilcox.mp3sorter
+
 case class Mp3ParserSettings(verbose: Boolean, dryRun: Boolean, targetDirectory: Option[String])
 
 object Mp3Sorter {
@@ -19,10 +21,12 @@ Options:
     if (settings.targetDirectory.isEmpty) {
       println(helpText)
     } else {
-      // TODO Jul 4, pmw: do something useful with these settings!
       println(s"Verbose? ${settings.verbose}")
       println(s"Dry run? ${settings.dryRun}")
       println(s"Target dir: ${settings.targetDirectory.get}")
+      // TODO Jul 4, pmw: do something useful with these settings!
+      val directoryScanner = new DirectoryScanner(settings.targetDirectory.get)
+      // TODO Jul 4, pmw: how can I make the underlying extraction logic testable?
     }
   }
 
