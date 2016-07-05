@@ -24,9 +24,15 @@ Options:
       println(s"Verbose? ${settings.verbose}")
       println(s"Dry run? ${settings.dryRun}")
       println(s"Target dir: ${settings.targetDirectory.get}")
-      // TODO Jul 4, pmw: do something useful with these settings!
       val directoryScanner = new DirectoryScanner(settings.targetDirectory.get)
-      // TODO Jul 4, pmw: how can I make the underlying extraction logic testable?
+      if (settings.verbose) {
+        if (settings.dryRun) {
+          println("WOULD MOVE:")
+        } else {
+          println("MOVING:")
+        }
+        println(directoryScanner.moveInformation())
+      }
     }
   }
 

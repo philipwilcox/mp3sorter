@@ -15,7 +15,7 @@ class MusicFile(file: File, tagData: TagData) {
   val relativeOutputPath = {
     val components = Seq(
       s"${tagData.artist()}/(${tagData.year()}) ${tagData.album()}/",
-      s"${tagData.track()} ${tagData.title()}.${FilenameUtils.getExtension(absolutePath)}"
+      s"${tagData.track()} ${tagData.title()}.${FilenameUtils.getExtension(absolutePath).toLowerCase}"
     )
     // TODO Jul 4, pmw: make settings injectable so we can only show this warning if verbose
     val relativePath = components.mkString

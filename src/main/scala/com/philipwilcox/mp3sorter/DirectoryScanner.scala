@@ -2,6 +2,9 @@ package com.philipwilcox.mp3sorter
 
 import java.io.File
 
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+
 class DirectoryScanner(baseDirectoryPath: String) {
   if (baseDirectoryPath == null || "".equalsIgnoreCase(baseDirectoryPath)) {
     throw new Exception("Can't initialize with empty directory path!")
@@ -9,20 +12,31 @@ class DirectoryScanner(baseDirectoryPath: String) {
 
   private val fileArray = recursiveListFiles(new java.io.File(baseDirectoryPath))
 
-  // Build up data structures about additional file information
-  analyzeFiles()
+  private val musicFileList = fileArray.map(f => new MusicFile(f, TagData.readFromFile(f)))
+
+  private val moveInformationPathMap = {
+    val mutableMap = mutable.HashMap.empty[String, String]
+    for (m <- musicFileList) {
+      mutableMap += (m.absolutePath -> (baseDirectoryPath + "/" + m.relativeOutputPath))
+    }
+    mutableMap.toMap
+  }
 
   private def recursiveListFiles(f: File): Array[File] = {
     val these = f.listFiles
     these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
   }
 
-  private def analyzeFiles(): Unit = {
-    for (f <- fileArray) {
-      // TODO Jul 4, pmw: if I want to test at this level, I'll need to inject and mock out TagData object
-      val musicFile = new MusicFile(f, TagData.readFromFile(f))
-      println(musicFile) // TODO Jul 4, pmw: map to a MusicFile list
+
+  /**
+    * This returns a string containing, one per line, the old absolute path and new absolute path for the file.
+    */
+  def moveInformation(): String = {
+    val stringList = new ListBuffer[String]()
+    for ((oldPath, newPath) <- moveInformationPathMap) {
+      stringList += s"$oldPath -> $newPath"
     }
+    stringList.mkString("\n")
   }
 
   // TODO Jul 4, pmw: this will expose "print move information" as well as "move files" methods that will be
