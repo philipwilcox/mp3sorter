@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 /**
   * Wrapper interface for JAudioTagger to return metadata extracted from a File'ss tags.
   */
-object TagData {
+class TagDataHelper {
   def readFromFile(file: File): TagData = {
     val audioFile = AudioFileIO.read(file)
     new TagData(audioFile.getTag)

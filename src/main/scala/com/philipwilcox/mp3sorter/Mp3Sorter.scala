@@ -2,7 +2,10 @@ package com.philipwilcox.mp3sorter
 
 case class Mp3ParserSettings(verbose: Boolean, dryRun: Boolean, targetDirectory: Option[String])
 
-object Mp3Sorter {
+import scaldi.Module
+
+object Mp3Sorter extends Module {
+  bind [TagDataHelper] to new TagDataHelper
 
   def main(args: Array[String]): Unit = {
     val helpText =
