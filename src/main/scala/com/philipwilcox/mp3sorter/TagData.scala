@@ -5,7 +5,6 @@ import java.time.ZonedDateTime
 
 import org.apache.commons.lang3.StringUtils
 import org.jaudiotagger.audio.AudioFileIO
-import org.jaudiotagger.tag.mp4.field.Mp4TagTextField
 import org.jaudiotagger.tag.{FieldKey, Tag}
 import org.joda.time.DateTime
 
