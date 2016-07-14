@@ -10,39 +10,15 @@ class TagDataSpec extends UnitSpec {
 
   case class FixtureParam(tag: Tag)
 
-  override def withFixture(test: OneArgTest) = {
+  def withFixture(test: OneArgTest) = {
     // Perform setup
     val tag = mock[Tag]
     val fixture = FixtureParam(tag)
-    try {
-      withFixture(test.toNoArgTest(fixture)) // "loan" the fixture to the test
-    }
+    withFixture(test.toNoArgTest(fixture)) // "loan" the fixture to the test
   }
 
-  behavior of "TagDataSpec"
-
-  it should "album" in {
+  "TagDataSpec" should "album" in { fixture =>
     println("YO")
-  }
-
-  it should "return value from Tag object for artist" in {
-
-  }
-
-  it should "year" in {
-
-  }
-
-  it should "title" in {
-
-  }
-
-  it should "track" in {
-
-  }
-
-  it should "toString" in {
-
   }
 
 }
