@@ -8,3 +8,4 @@ import org.scalamock.scalatest.MockFactory
   */
 abstract class UnitSpec extends fixture.FlatSpec
   with MockFactory
+  with Matchers
